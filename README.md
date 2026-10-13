@@ -35,6 +35,27 @@ curl -X POST "https://YOUR_PROJECT_REF.supabase.co/functions/v1/generate-daily-q
   -H "Authorization: Bearer YOUR_SERVICE_ROLE_KEY"
 ```
 
+## Deployment
+
+Two GitHub Actions workflows deploy on push to `main`:
+
+- `.github/workflows/deploy-pages.yml` — builds the frontend and publishes it to GitHub Pages at `https://bhnrathore.github.io/QuizApp/`.
+- `.github/workflows/deploy-supabase.yml` — deploys the edge functions whenever `supabase/functions/**` or `supabase/config.toml` changes.
+
+One-time setup in the GitHub repo:
+
+1. **Settings → Pages → Source:** GitHub Actions.
+2. **Settings → Secrets and variables → Actions → New repository secret:**
+
+   | Secret | Where to find it |
+   |---|---|
+   | `VITE_SUPABASE_URL` | Supabase → Project Settings → API → Project URL |
+   | `VITE_SUPABASE_ANON_KEY` | Supabase → Project Settings → API → `anon` `public` key |
+   | `SUPABASE_PROJECT_ID` | Supabase → Project Settings → General → Reference ID |
+   | `SUPABASE_ACCESS_TOKEN` | https://supabase.com/dashboard/account/tokens → Generate new token |
+
+Database migrations (`supabase/migrations/*.sql`) are not applied automatically — run them in the SQL editor as described above.
+
 ## Layout
 
 ```
